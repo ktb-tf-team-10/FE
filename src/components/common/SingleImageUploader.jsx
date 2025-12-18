@@ -132,7 +132,7 @@ export default function SingleImageUploader({
           </div>
 
           <div className={styles.hint} aria-hidden="true">
-            또는 드래그해서 놓아도 돼요
+            드래그를 통한 첨부도 가능합니다!
           </div>
         </button>
       ) : (
@@ -148,10 +148,6 @@ export default function SingleImageUploader({
           >
             ×
           </button>
-
-          <div className={styles.badge} aria-hidden="true">
-            ✓ 업로드 완료
-          </div>
         </div>
       )}
     </div>

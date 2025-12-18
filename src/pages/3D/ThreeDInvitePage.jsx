@@ -147,16 +147,16 @@ export function ThreeDInvitePage() {
       <main className={styles.main}>
         <section className={styles.card}>
           <header className={styles.header}>
-            <div className={styles.emoji} aria-hidden="true">🎨</div>
+            <div className={styles.emoji} aria-hidden="true">👰🏻 🧡 🤵🏻</div>
             <h1 className={styles.title}>3D 청첩장 만들기</h1>
-            <p className={styles.subTitle}>메인 1장(필수) + 레퍼런스 최대 2장(선택)</p>
+            <p className={styles.subTitle}>우리만의 사진으로 특별한 3D 청첩장을 만들 수 있어요!</p>
           </header>
 
           {/* ✅ 메인 이미지(필수) */}
           <section className={styles.section}>
             <div className={styles.sectionTop}>
               <div className={styles.sectionTitle}>
-                <span className={styles.req}>*</span> 메인 사진 (필수)
+                1. 메인 사진 <span className={styles.req}>*</span>
               </div>
               {!!mainImage && <div className={styles.pillOk}>업로드 완료</div>}
             </div>
@@ -174,7 +174,7 @@ export function ThreeDInvitePage() {
           {/* ✅ 레퍼런스 이미지(선택) */}
           <section className={styles.section}>
             <div className={styles.sectionTop}>
-              <div className={styles.sectionTitle}>레퍼런스 사진 (선택, 최대 2장)</div>
+              <div className={styles.sectionTitle}>2. 레퍼런스 사진 (선택, 최대 2장)</div>
               <div className={styles.hintText}>
                 원하는 분위기/포즈 참고용 (없어도 진행 가능)
               </div>

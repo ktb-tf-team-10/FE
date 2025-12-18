@@ -52,7 +52,7 @@
     --color-purple-light: #ACA0EB;
     --color-purple-bright: #7F6AEE;
     --color-gray-light: #F4F5F7;
-    --color-gray: #D9D9D9;
+    --color-gray: #525252;
     --color-gray-dark: #d3d3d3;
     --color-gray-light: #F9F9F9;
     --color-gray-text: #A6A6A6;
@@ -68,6 +68,10 @@
    font-family: "Pretendard";
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
    background-color: var(--color-white);
 }
@@ -81,7 +85,7 @@ body {
 
 body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: -30%;
   pointer-events: none;
   z-index: 0;

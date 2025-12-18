@@ -79,8 +79,8 @@
 
 .title {
   font-size: 22px;
-  font-weight: 950;
-  color: #1f2937;
+  font-weight: 700;
+  color: var(--color-black-light);
   letter-spacing: -0.3px;
   margin-bottom: 8px;
   text-align: center;
@@ -88,7 +88,7 @@
 
 .helper {
   font-size: 15px;
-  font-weight: 750;
+  font-weight: 500;
   color: rgba(55, 65, 81, 0.82);
   text-align: center;
   margin-bottom: 18px;
@@ -101,7 +101,7 @@
   padding: 12px 22px;
   border-radius: 14px;
   color: white;
-  font-weight: 900;
+  font-weight: 700;
   font-size: 16px;
   background: linear-gradient(135deg, #fb7185 0%, #f97316 65%, #f59e0b 100%);
   box-shadow: 0 18px 55px rgba(249, 115, 22, 0.24);
@@ -148,9 +148,9 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
   border: 0;
   cursor: pointer;
 
@@ -220,9 +220,9 @@
   }
 
   .removeBtn {
-    width: 62px;
-    height: 62px;
-    font-size: 36px;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
   }
 
   .badge {

@@ -24,7 +24,6 @@ export function LandingPage() {
       //[API 연동] 백엔드 연동 후 수정
       const res = await apiFetch("/api/invitations/init", {
         method: "GET",
-        credentials: "include", 
         headers: {
           Accept: "application/json",
         },
@@ -49,7 +48,6 @@ export function LandingPage() {
       setErrMsg(e?.message || "요청 중 오류가 발생했습니다.");
     } finally {
       setLoading(false);
-      navigate(STEPS.threed.path);
     }
   };
 

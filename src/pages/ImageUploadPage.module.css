@@ -1,0 +1,10 @@
+.page {
+  min-height: 100vh;
+}
+
+/* 상단 헤더 밑 내용 정렬 */
+.main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 16px 80px;
+}

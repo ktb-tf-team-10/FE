@@ -16,7 +16,7 @@ function GLBModel({ url, scale = 1, rotationSpeed = 0.003 }) {
   return <primitive ref={ref} object={scene} scale={scale} />;
 }
 
-useGLTF.preload("/models/myModel.glb");
+//useGLTF.preload("/models/myModel.glb");
 
 export default function ModelViewer() {
   return (

@@ -49,7 +49,9 @@ export function SamplePage() {
   const dday = useMemo(() => calcDDay(data?.wedding?.date), [data?.wedding?.date]);
 
   // ✅ 실제 glb url (없으면 로컬 테스트)
-  const model3dUrl = data?.threeD?.assets?.model3dUrl || "/images/model1.glb";
+  const model3dUrl = data?.threeD?.result2dImageUrls?.[0]
+    || data?.threeD?.assets?.model3dUrl
+    || "/images/model1.glb";
 
   const inviteTitle = data?.extraMessage?.trim()
     ? "초대합니다"

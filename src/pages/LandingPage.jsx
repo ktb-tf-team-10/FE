@@ -43,7 +43,8 @@ export function LandingPage() {
       // const result = await res.json().catch(() => null);
       // console.log("[init result]", result);
 
-      navigate(STEPS.basic.path);
+      //수정 필요!!!!!!!!!!!
+      navigate(STEPS.threed.path);
     } catch (e) {
       setErrMsg(e?.message || "요청 중 오류가 발생했습니다.");
     } finally {

@@ -111,7 +111,7 @@ export function ThreeDInvitePage() {
 
       await startThreeDJob({
         submitUrl: "/api/invitations/3d",
-        statusUrl: "/api/invitations/design/status",
+        statusUrl: "/api/invitations/3d/status",
         intervalMs: 5000,
         mainOverride: mainImage,
         referencesOverride: references,

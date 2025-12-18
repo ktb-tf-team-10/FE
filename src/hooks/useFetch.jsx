@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const URL_BASE = ''; //서버 URL로 변경 필요
+const URL_BASE = "https://d21m8tnz76fb5w.cloudfront.net"; //서버 URL로 변경 필요
 
 export function getAccessToken() {
   return localStorage.getItem('accessToken');

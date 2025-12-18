@@ -121,7 +121,7 @@ export function SamplePage() {
             <div className={styles.modelHint}>드래그해서 돌려보기</div>
           </div>
 
-          <ModelViewer />
+          <ModelViewer modelUrl={model3dUrl} />
 
           {data?.threeD?.message && (
             <div className={styles.serverMessage}>{data.threeD.message}</div>

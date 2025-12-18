@@ -24,7 +24,7 @@ export function LandingPage() {
       //[API 연동] 백엔드 연동 후 수정
       const res = await apiFetch("/api/invitations/init", {
         method: "GET",
-        credentials: "omit",
+        credentials: "include",
       });
 
       console.log('init 요청 응답: ', res);
@@ -44,6 +44,42 @@ export function LandingPage() {
       // console.log("[init result]", result);
 
       navigate(STEPS.basic.path);
+    } catch (e) {
+      setErrMsg(e?.message || "요청 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handle3d = async () => {
+    if (loading) return;
+    setLoading(true);
+    setErrMsg("");
+
+    try {
+      //[API 연동] 백엔드 연동 후 수정
+      const res = await apiFetch("/api/invitations/init", {
+        method: "GET",
+        credentials: "omit",
+      });
+
+      console.log('init 요청 응답: ', res);
+
+      // if (!res.ok) {
+      //   let msg = `초기화 요청 실패 (${res.status})`;
+      //   try {
+      //     const j = await res.json();
+      //     msg = j?.message || msg;
+      //   } catch {}
+      //   throw new Error(msg);
+      // }
+
+      // 서버가 쿠키를 Set-Cookie로 내려주면, 위 credentials: "include" 덕분에 브라우저에 저장됨
+      // 필요하면 응답 바디를 읽어도 됨
+      // const result = await res.json().catch(() => null);
+      // console.log("[init result]", result);
+
+      navigate(STEPS.threed.path);
     } catch (e) {
       setErrMsg(e?.message || "요청 중 오류가 발생했습니다.");
     } finally {

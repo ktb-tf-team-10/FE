@@ -4,7 +4,6 @@ import { OrbitControls, Environment, Html, useGLTF, Bounds } from "@react-three/
 import { useNavigate } from "react-router-dom";
 import styles from "./ThreeDInvitationResultPage.module.css";
 import { useInvitation } from "../../contexts/InvitationContext.jsx"; // 경로 맞게 조정
-import ModelViewer from "../../components/ThreeDModel.jsx";
 
 function Loader() {
   return (
@@ -70,7 +69,6 @@ export function ThreeDInvitationResultPage() {
       </div>
 
       <main className={styles.main}>
-         <ModelViewer />
         <section className={styles.card}>
           <header className={styles.header}>
             <div className={styles.badge}>3D 결과</div>

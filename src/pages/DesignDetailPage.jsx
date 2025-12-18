@@ -106,17 +106,21 @@ export function DesignDetailPage() {
 
       <main className={styles.main}>
         <section className={styles.card}>
-          <h1 className={`${styles.pageTitle} step-title`}>STEP 4. 디자인 요청 사항</h1>
+          <header className={styles.header}>
+            <p className={styles.stepLabel}>STEP 4</p>
+            <h1 className={`${styles.pageTitle} step-title`}>디자인 요청 사항</h1>
+            <p className={styles.subTitle}>원하는 스타일의 청첩장 이미지를 첨부해주세요</p>
+          </header>
 
           {/* 1) 스타일 예시 이미지 */}
           <section className={styles.stepBlock}>
             <div className={styles.stepHeader}>
-              <div className={styles.stepNumber}>1</div>
-              <span className={styles.stepTitle}>스타일 예시 이미지</span>
+              {/* <div className={styles.stepNumber}>1</div> */}
+              {/* <span className={styles.stepTitle}>스타일 예시 이미지</span> */}
             </div>
-            <p className={styles.stepDesc}>
+            {/* <p className={styles.stepDesc}>
               원하시는 청첩장 스타일의 참고 이미지를 업로드해주세요. AI가 이 스타일을 참고하여 디자인합니다.
-            </p>
+            </p> */}
 
             <div className={styles.stepContent}>
               <ImageUploader
@@ -128,7 +132,7 @@ export function DesignDetailPage() {
           </section>
 
           {/* 2) 테두리 디자인 선택 */}
-          <section className={styles.stepBlock}>
+          {/* <section className={styles.stepBlock}>
             <div className={styles.stepHeader}>
               <div className={styles.stepNumber}>2</div>
               <span className={styles.stepTitle}>테두리 디자인 선택</span>
@@ -143,7 +147,7 @@ export function DesignDetailPage() {
                 onChange={handleFrameChange}    // ✅ 내부에서 "ROMANTIC"로 저장
               />
             </div>
-          </section>
+          </section> */}
         </section>
 
         <button type="button" className={styles.nextButton} onClick={handleSubmit}>

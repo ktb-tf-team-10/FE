@@ -40,7 +40,7 @@
 
 .card {
   border-radius: 28px;
-  padding: 40px 36px;
+  padding: 40px 36px 48px;
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid rgba(255, 182, 193, 0.25);
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
@@ -48,11 +48,24 @@
   -webkit-backdrop-filter: blur(22px);
 }
 
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.stepLabel {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ff7a9e;
+  margin-bottom: 6px;
+}
+
 .pageTitle {
   text-align: center;
   font-size: 34px;
-  font-weight: 900;
+  font-weight: 700;
   color: #1f2937;
-  margin-bottom: 32px;
+  margin: 0;
   letter-spacing: -0.5px;
 }

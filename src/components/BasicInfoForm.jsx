@@ -297,21 +297,9 @@ export function BasicInfoForm() {
         />
       </div>
 
-      {/* ✅ 제출 버튼 */}
-      <div style={{ marginTop: 16, display: "flex", justifyContent: "flex-end" }}>
-        <button
-          type="submit"
-          disabled={!isValid}
-          style={{
-            padding: "12px 18px",
-            borderRadius: 12,
-            border: "0",
-            fontWeight: 900,
-            cursor: isValid ? "pointer" : "not-allowed",
-            opacity: isValid ? 1 : 0.55,
-          }}
-        >
-          저장하고 다음
+      <div className={styles.submitRow}>
+        <button type="submit" disabled={!isValid} className={styles.primaryBtn}>
+          다음
         </button>
       </div>
     </form>

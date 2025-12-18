@@ -96,7 +96,8 @@ export function ToneSelectPage() {
       <main className={styles.main}>
         <section className={styles.card}>
           <header className={styles.header}>
-            <h1 className={`${styles.pageTitle} step-title`}>STEP 3. 문구 톤 선택</h1>
+            <p className={styles.stepLabel}>STEP 3</p>
+            <h1 className={`${styles.pageTitle} step-title`}>문구 톤 선택</h1>
             <p className={styles.subTitle}>청첩장에 사용할 문구의 톤을 선택해주세요</p>
           </header>
 
@@ -143,9 +144,6 @@ export function ToneSelectPage() {
           </div>
 
           <footer className={styles.footer}>
-            <button type="button" className={styles.nextBtn} onClick={handleBack}>
-              이전 단계
-            </button>
             <button type="button" className={styles.nextBtn} onClick={handleNext}>
               다음 단계
             </button>

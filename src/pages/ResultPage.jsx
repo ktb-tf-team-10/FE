@@ -30,6 +30,12 @@ export function ResultPage() {
         desc: "문구/정보가 포함된 청첩장",
         src: "/mock/result-2.png",
       },
+      {
+        id: "result-3",
+        title: "청첩장 3",
+        desc: "추가 옵션으로 꾸며본 레이아웃 예시",
+        src: "/mock/result-1.png",
+      },
     ],
     []
   );
@@ -64,29 +70,26 @@ export function ResultPage() {
     if (dx < -TH) goNext();
   };
 
-  // --- download ---
-  const downloadOne = (src, filename) => {
-    const a = document.createElement("a");
-    a.href = src;
-    a.download = filename || "invitation.png";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  };
-
-  const downloadCurrent = () => {
-    downloadOne(current.src, `${current.id}.png`);
-  };
-
   const downloadAll = () => {
     // 브라우저 정책상 연속 다운로드가 막힐 수 있음 (테스트용으로는 OK)
     images.forEach((img, i) => {
-      setTimeout(() => downloadOne(img.src, `${img.id}.png`), i * 250);
+      setTimeout(() => {
+        const a = document.createElement("a");
+        a.href = img.src;
+        a.download = `${img.id}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }, i * 250);
     });
   };
 
   const goOptions = () => {
     navigate(STEPS.options.path);
+  };
+
+  const redoDesign = () => {
+    navigate(STEPS.design.path);
   };
 
   return (
@@ -97,16 +100,19 @@ export function ResultPage() {
       <main className={styles.main}>
         <section className={styles.card}>
           <header className={styles.header}>
-            <h1 className={`${styles.pageTitle} step-title`}>STEP 7. 최종 결과</h1>
+            <p className={styles.stepLabel}>STEP 7</p>
+            <h1 className={`${styles.pageTitle} step-title`}>최종 결과</h1>
             <p className={styles.hint}>
               <span aria-hidden="true">📱</span> 좌우로 스와이프하여 {total}장의 청첩장을 확인하세요
             </p>
           </header>
 
-          {/* viewer */}
-          <div className={styles.viewerWrap}>
-            <div className={styles.counter} aria-label={`현재 ${index + 1} / ${total}`}>
-              {index + 1} / {total}
+          <div className={styles.viewerCard}>
+            <div className={styles.viewerTop}>
+              <div className={styles.viewerBadge}>청첩장 {index + 1}</div>
+              <div className={styles.counter} aria-label={`현재 ${index + 1} / ${total}`}>
+                {index + 1} / {total}
+              </div>
             </div>
 
             <div
@@ -114,6 +120,16 @@ export function ResultPage() {
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
             >
+              <button
+                type="button"
+                className={`${styles.arrow} ${styles.left}`}
+                onClick={goPrev}
+                disabled={index === 0}
+                aria-label="이전 이미지"
+              >
+                ‹
+              </button>
+
               <div
                 className={styles.track}
                 style={{ transform: `translateX(-${index * 100}%)` }}
@@ -140,16 +156,6 @@ export function ResultPage() {
                 ))}
               </div>
 
-              {/* arrows (desktop 보조) */}
-              <button
-                type="button"
-                className={`${styles.arrow} ${styles.left}`}
-                onClick={goPrev}
-                disabled={index === 0}
-                aria-label="이전 이미지"
-              >
-                ‹
-              </button>
               <button
                 type="button"
                 className={`${styles.arrow} ${styles.right}`}
@@ -161,7 +167,6 @@ export function ResultPage() {
               </button>
             </div>
 
-            {/* dots */}
             <div className={styles.dots} role="tablist" aria-label="청첩장 페이지">
               {images.map((_, i) => (
                 <button
@@ -176,38 +181,16 @@ export function ResultPage() {
             </div>
           </div>
 
-          {/* nav buttons */}
-          <div className={styles.navRow}>
-            <button
-              type="button"
-              className={`${styles.navBtn} ${styles.navGhost}`}
-              onClick={() => navigate(STEPS.design.path)}
-            >
-              ← 이전 페이지
-            </button>
-
-            <button
-              type="button"
-              className={`${styles.navBtn} ${styles.navPrimary}`}
-              onClick={() => navigate(STEPS.result.path)}
-              // 다음 페이지가 따로 있으면 여기 수정
-            >
-              다음 페이지 →
-            </button>
-          </div>
-
-          {/* download */}
-          <div className={styles.downloadRow}>
-            <button type="button" className={styles.downloadOne} onClick={downloadCurrent}>
-              현재 페이지 다운로드
-            </button>
-
-            <button type="button" className={styles.downloadAll} onClick={downloadAll}>
+          <div className={styles.ctaRow}>
+            <button type="button" className={styles.ctaBtn} onClick={downloadAll}>
               ⬇ 청첩장 {total}장 모두 다운로드
+            </button>
+            <button type="button" className={styles.ctaBtn} onClick={redoDesign}>
+              🎨 디자인 다시하기
             </button>
           </div>
         </section>
-         <button type="button" className={styles.tryOptionsBtn} onClick={goOptions}>
+        <button type="button" className={styles.tryOptionsBtn} onClick={goOptions}>
           ✨ 특별한 기능 사용해보기
         </button>
       </main>

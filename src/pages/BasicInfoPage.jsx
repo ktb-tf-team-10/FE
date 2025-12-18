@@ -19,7 +19,10 @@ export function BasicInfoPage() {
 
       <main className={styles.main}>
         <section className={styles.card}>
-          <h1 className={`${styles.pageTitle} step-title`}>STEP 1. 기본 정보 입력</h1>
+          <header className={styles.header}>
+            <p className={styles.stepLabel}>STEP 1</p>
+            <h1 className={`${styles.pageTitle} step-title`}>기본 정보 입력</h1>
+          </header>
           <BasicInfoForm />
         </section>
       </main>

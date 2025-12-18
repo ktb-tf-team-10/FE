@@ -38,18 +38,32 @@ export function ImageUploadPage() {
 
    return (
       <div className={styles.page}>
-         <ProgressBar title="청첩장 만들기" currentStep={1} totalSteps={7} />
+         <ProgressBar title="청첩장 만들기" currentStep={2} totalSteps={7} />
    
          <main className={styles.main}>
             <section className={styles.card}>
-               <h1 className={`${styles.pageTitle} step-title`}>STEP 2. 청첩장 메인 사진 업로드</h1>
-               <SingleImageUploader value={data.assets.userImages?.[0] ?? null} onChange={(fileOrNull) => {
-          setUserImages(fileOrNull ? [fileOrNull] : []);
-        }}/>
-               <GuideBox title="사진 업로드 가이드" items={items} icon="📸" />
+               <header className={styles.header}>
+                  <p className={styles.stepLabel}>STEP 2</p>
+                  <h1 className={`${styles.pageTitle} step-title`}>청첩장 메인 사진 업로드</h1>
+               </header>
+
+               <div className={styles.uploaderSection}>
+                  <SingleImageUploader
+                    value={data.assets.userImages?.[0] ?? null}
+                    onChange={(fileOrNull) => {
+                      setUserImages(fileOrNull ? [fileOrNull] : []);
+                    }}
+                  />
+               </div>
+
+               <div className={styles.guideSection}>
+                  <GuideBox title="사진 업로드 가이드" items={items} icon="📸" />
+               </div>
             </section>
             
-            <button type="button" onClick={handleNext}>다음</button>
+            <button type="button" className={styles.nextButton} onClick={handleNext}>
+              다음 단계로 이동
+            </button>
          </main>
       </div>
    );

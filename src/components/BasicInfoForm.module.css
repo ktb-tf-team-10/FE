@@ -102,3 +102,34 @@
   color: #6b7280;
   margin-bottom: 1.5rem; /* mb-6 */
 }
+
+.submitRow {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.primaryBtn {
+  width: min(320px, 100%);
+  height: 56px;
+  border-radius: 16px;
+  border: none;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #fb7185 0%, #f97316 65%, #f59e0b 100%);
+  box-shadow: 0 18px 50px rgba(249, 115, 22, 0.25);
+  cursor: pointer;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.primaryBtn:not(:disabled):hover {
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+}

@@ -26,10 +26,15 @@ export const initialInvitationData = {
     userImages: [],
   },
 
+  design: {
+    result2dImageUrls: [],
+  },
+
   threeD: {
     status: "IDLE",
     invitationId: null,
     assets: null, // 여기에 최종 glb 파일 presigned URL 저장
+    result2dImageUrls: [],
     error: null,
     startedAt: null,
 
@@ -123,6 +128,29 @@ export function InvitationProvider({ children }) {
     setData((prev) => setByPath(prev, "threeD.referenceImages", safe));
   }, []);
 
+  const setDesignResultImages = useCallback((urls = []) => {
+    const safe = Array.isArray(urls) ? urls.filter(Boolean) : [];
+    setData((prev) => setByPath(prev, "design.result2dImageUrls", safe));
+  }, []);
+
+  const resetDesignStage = useCallback(() => {
+    setData((prev) => ({
+      ...prev,
+      assets: {
+        ...prev.assets,
+        styleImages: [],
+      },
+      design: {
+        ...initialInvitationData.design,
+      },
+      threeD: {
+        ...initialInvitationData.threeD,
+        mainImages: prev.threeD?.mainImages ?? [],
+        referenceImages: prev.threeD?.referenceImages ?? [],
+      },
+    }));
+  }, []);
+
   // ✅ 핵심: startThreeDJob이 "최신 dataRef" 또는 override를 사용하게
   //[3D 모델 생성 API 호출 + 폴링]
   const startThreeDJob = useCallback(
@@ -168,24 +196,47 @@ export function InvitationProvider({ children }) {
          optionalImages.forEach((f) => formData.append("optionalImages", f));
 
          //submitUrl: /api/invitations/3d (메소드 호출 시 인자로 넣어줌)
-         const submitRes = await apiFetch(submitUrl, {
-            method: "POST",
-            body: formData,
-            signal: controller.signal,
-            credentials,
-         });
+         // const submitRes = await apiFetch(submitUrl, {
+         //    method: "POST",
+         //    body: formData,
+         //    signal: controller.signal,
+         //    credentials,
+         // });
 
-         if (!submitRes.ok) {
-            let message = `3D 생성 요청 실패 (${submitRes.status})`;
-            try {
-               const json = await submitRes.json();
-               message = json?.message || message;
-            } catch {}
-            throw new Error(message);
+         const submitRes = {
+            "status": "COMPLETED",
+            "result2dImageUrls": [
+               "https://dns7warjxrmv9.cloudfront.net/3d_models/05589d09-ab09-4cd3-8db9-54ac355ece5b_1766079257.glb"
+            ],
+            "step": null,
+            "stepName": null,
+            "progress": null
          }
 
-         const status = submitRes.status;
-         if(status) console.log('요청 상황: ', status);
+         if (Array.isArray(submitRes?.result2dImageUrls) && submitRes.result2dImageUrls.length) {
+            setData((prev) =>
+              setByPath(prev, "threeD", {
+                ...prev.threeD,
+                result2dImageUrls: submitRes.result2dImageUrls,
+                assets: {
+                  ...(prev.threeD?.assets ?? {}),
+                  model3dUrl: submitRes.result2dImageUrls[0],
+                },
+              })
+            );
+         }
+
+         // if (!submitRes.ok) {
+         //    let message = `3D 생성 요청 실패 (${submitRes.status})`;
+         //    try {
+         //       const json = await submitRes.json();
+         //       message = json?.message || message;
+         //    } catch {}
+         //    throw new Error(message);
+         // }
+
+         // const status = submitRes.status;
+         // if(status) console.log('요청 상황: ', status);
 
          setData((prev) => setByPath(prev, "threeD", {
             ...prev.threeD,
@@ -194,85 +245,85 @@ export function InvitationProvider({ children }) {
 
          
          //[3D 모델 생성 완료 콜백 API 호출]
-         const pollOnce = async () => {
+         // const pollOnce = async () => {
 
-          if (!abortRef.current) return;
+         //  if (!abortRef.current) return;
 
-          try {
-            const response = await apiFetch(statusUrl, {
-               method: "GET",
-               headers: { Accept: "application/json" },
-               signal: controller.signal,
-               credentials: "include",
-            });
+         //  try {
+         //    const response = await apiFetch(statusUrl, {
+         //       method: "GET",
+         //       headers: { Accept: "application/json" },
+         //       signal: controller.signal,
+         //       credentials: "include",
+         //    });
 
-            if (!response.ok) throw new Error(`status 조회 실패 (${res.status})`);
+         //    if (!response.ok) throw new Error(`status 조회 실패 (${res.status})`);
 
-            let statusData;
-            try {
-               statusData = await response.json();
-            }
-            catch(error) {
-               console.log('콜백 함수 JSON 파싱 오류');
-               throw new Error(`콜백 함수 JSON 파싱 오류 (${error})`)
-            }
+         //    let statusData;
+         //    try {
+         //       statusData = await response.json();
+         //    }
+         //    catch(error) {
+         //       console.log('콜백 함수 JSON 파싱 오류');
+         //       throw new Error(`콜백 함수 JSON 파싱 오류 (${error})`)
+         //    }
 
-            //모델 생성에 성공한 경우
-            if (is3DDone(statusData?.status)) {
-               console.log('3D 모델 생성 성공!!');
-               console.log(statusData);
-               setData((prev) =>
-                  setByPath(prev, "threeD", {
-                     ...prev.threeD,
-                     status: "DONE",
-                     invitationId: statusData?.invitationId ?? null,
-                     assets: statusData?.assets ?? null,
-                     message: statusData?.message ?? null,
-                     error: null,
-                  })
-               );
-               stopThreeDPolling("DONE");
-               return;
-            }
+         //    //모델 생성에 성공한 경우
+         //    if (is3DDone(statusData?.status)) {
+         //       console.log('3D 모델 생성 성공!!');
+         //       console.log(statusData);
+         //       setData((prev) =>
+         //          setByPath(prev, "threeD", {
+         //             ...prev.threeD,
+         //             status: "DONE",
+         //             invitationId: statusData?.invitationId ?? null,
+         //             assets: statusData?.assets ?? null,
+         //             message: statusData?.message ?? null,
+         //             error: null,
+         //          })
+         //       );
+         //       stopThreeDPolling("DONE");
+         //       return;
+         //    }
 
-            //모델 생성에 실패한 경우
-            if (isFailed(statusData?.status)) {
-               console.log('3D 모델 생성 실패ㅜㅜ');
-               console.log(statusData);
-               setData((prev) =>
-                  setByPath(prev, "threeD", {
-                     ...prev.threeD,
-                     status: "FAILED",
-                     invitationId: statusData?.invitationId ?? null,
-                     assets: statusData?.assets ?? null,
-                     message: statusData?.message ?? null,
-                     error: statusData?.message || "생성에 실패했습니다.",
-                  })
-               );
-               stopThreeDPolling("FAILED");
-               return;
-            }
+         //    //모델 생성에 실패한 경우
+         //    if (isFailed(statusData?.status)) {
+         //       console.log('3D 모델 생성 실패ㅜㅜ');
+         //       console.log(statusData);
+         //       setData((prev) =>
+         //          setByPath(prev, "threeD", {
+         //             ...prev.threeD,
+         //             status: "FAILED",
+         //             invitationId: statusData?.invitationId ?? null,
+         //             assets: statusData?.assets ?? null,
+         //             message: statusData?.message ?? null,
+         //             error: statusData?.message || "생성에 실패했습니다.",
+         //          })
+         //       );
+         //       stopThreeDPolling("FAILED");
+         //       return;
+         //    }
 
-            //모델 생성이 진행 중인 경우
-            setData((prev) =>
-              setByPath(prev, "threeD", {
-                  ...prev.threeD,
-                  status: "RUNNING",
-                  invitationId: statusData?.invitationId ?? prev.threeD.invitationId,
-                  assets: statusData?.assets ?? prev.threeD.assets,
-                  message: statusData?.message ?? prev.threeD.message,
-                  error: null,
-              })
-            );
+         //    //모델 생성이 진행 중인 경우
+         //    setData((prev) =>
+         //      setByPath(prev, "threeD", {
+         //          ...prev.threeD,
+         //          status: "RUNNING",
+         //          invitationId: statusData?.invitationId ?? prev.threeD.invitationId,
+         //          assets: statusData?.assets ?? prev.threeD.assets,
+         //          message: statusData?.message ?? prev.threeD.message,
+         //          error: null,
+         //      })
+         //    );
 
-            pollTimerRef.current = setTimeout(pollOnce, intervalMs);
+         //    pollTimerRef.current = setTimeout(pollOnce, intervalMs);
 
-          } catch (e) {
-            if (e?.name === "AbortError") return;
-            //네트워크 오류인 경우 재시도
-            pollTimerRef.current = setTimeout(pollOnce, intervalMs);
-          }
-        };
+         //  } catch (e) {
+         //    if (e?.name === "AbortError") return;
+         //    //네트워크 오류인 경우 재시도
+         //    pollTimerRef.current = setTimeout(pollOnce, intervalMs);
+         //  }
+      //   };
 
         pollTimerRef.current = setTimeout(pollOnce, intervalMs);
       } catch (e) {
@@ -302,14 +353,16 @@ export function InvitationProvider({ children }) {
 
       setStyleImages: (files) => setData((prev) => setByPath(prev, "assets.styleImages", files)),
       setUserImages: (files) => setData((prev) => setByPath(prev, "assets.userImages", files)),
+      setDesignResultImages,
 
       // ✅ 3D
       setThreeDMainImage,
       setThreeDReferenceImages,
+      resetDesignStage,
       startThreeDJob,
       stopThreeDPolling,
     }),
-    [setThreeDMainImage, setThreeDReferenceImages, startThreeDJob, stopThreeDPolling]
+    [setDesignResultImages, setThreeDMainImage, setThreeDReferenceImages, resetDesignStage, startThreeDJob, stopThreeDPolling]
   );
 
   return <InvitationContext.Provider value={{ data, ...actions }}>{children}</InvitationContext.Provider>;

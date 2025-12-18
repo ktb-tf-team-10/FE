@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const URL_BASE = "https://d21m8tnz76fb5w.cloudfront.net"; //서버 URL로 변경 필요
+//const URL_BASE = "https://api.dualstack.ktb-hakcathon-alb-422139206.ap-northeast-2.elb.amazonaws.com"; //서버 URL로 변경 필요
+const URL_BASE = "https://api.marry-invitation.com";
 
 export function getAccessToken() {
   return localStorage.getItem('accessToken');
@@ -43,6 +44,7 @@ export function useFetch() {
    const [ loading, setLoading ] = useState(false);
 
    const controllerRef = useRef(null);
+   const timeoutIdRef = useRef(null);
 
    const abort = useCallback(() => {
       controllerRef.current?.abort?.();
@@ -57,9 +59,11 @@ export function useFetch() {
       }
    }, []);
 
-   const apiFetch = useCallback(async (url, options) => {
+   const apiFetch = useCallback(async (url, options = {}) => {
 
       setState((s) => ({...s, loading: true, error: null }));
+
+      options.header = options.header || {};
 
       if (options.withAuth) {
          const accessToken = getAccessToken();
@@ -72,12 +76,19 @@ export function useFetch() {
       }
 
       try {
+         const controller = new AbortController();
+         controllerRef.current = controller;
+
+         if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+         const timeoutMs = typeof options.timeoutMs === "number" ? options.timeoutMs : 600000; // 기본 10분
+         timeoutIdRef.current = setTimeout(() => controller.abort(), timeoutMs);
+
          const response = await  fetch(`${URL_BASE}${url}`, {
             method: options.method,
             credentials: options.credentials,
             headers: options.header,
             body: options.body,
-            signal: controllerRef.current?.signal
+            signal: controller.signal
          });
 
          let data = null;
@@ -99,15 +110,23 @@ export function useFetch() {
          setState({data: data, loading: false, error: null});
          return data;
 
-      }
-      catch(error) {
-         if(error.name === 'AbortError') return; //요청이 AbortController에 의해 중단된 경우
-         setState({data: null, loading: false, error: error});
+      } catch(error) {
+         if (error.name === "AbortError") return;
+         setState({ data: null, loading: false, error });
+         throw error;
+      } finally {
+         if (timeoutIdRef.current) {
+            clearTimeout(timeoutIdRef.current);
+            timeoutIdRef.current = null;
+         }
       }
    }, []);
 
    useEffect(() => {
-      return () => controllerRef.current?.abort?.();
+      return () => {
+         controllerRef.current?.abort?.();
+         if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+      };
    }, []);
 
    return { ...state, apiFetch, abort, simulate };

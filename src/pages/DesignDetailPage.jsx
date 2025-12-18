@@ -12,7 +12,7 @@ import LoadingModal from "../components/common/LoadingModal.jsx";
 export function DesignDetailPage() {
 
   const navigate = useNavigate();
-  const { data, setStyleImages, updateField } = useInvitation();
+  const { data, setStyleImages, updateField, setDesignResultImages } = useInvitation();
   const { loading, apiFetch, simulate } = useFetch();
 
   // FrameSelector는 보통 "romantic" 같은 소문자 id를 쓰니까
@@ -45,7 +45,6 @@ export function DesignDetailPage() {
          extraMessage: data.extraMessage,
          additionalRequest: data.additionalRequest,
          tone: data.tone,   
-         frame: data.frame, 
       };
 
       try {
@@ -57,31 +56,40 @@ export function DesignDetailPage() {
 
          if (mainImage) formData.append("weddingImage", mainImage);
          styleImages.forEach((f) => formData.append("styleImages", f));
-         formData.append("data", JSON.stringify(payload));
+         formData.append("data", new Blob([JSON.stringify(payload)], { type: "application/json" }));
 
          console.log('요청 바디: ', formData);
 
-         const res = await apiFetch("/api/invitations/design", {
+         // const response = {
+         //    "status": "COMPLETED",
+         //    "result2dImageUrls": [
+         //       "https://dns7warjxrmv9.cloudfront.net/invitations/design-gemini_1766077279_5ca635e0.png",
+         //       "https://dns7warjxrmv9.cloudfront.net/invitations/design-gemini_1766077297_729c4356.png",
+         //       "https://dns7warjxrmv9.cloudfront.net/invitations/design-gemini_1766077313_c368ab89.png",
+         //    ],
+         //    "step": null,
+         //    "stepName": null,
+         //    "progress": null
+         // }
+
+         const response = await apiFetch("/api/invitations/design", {
             method: "POST",
             body: formData,
             credentials: "include",
          });
 
-         console.log('이미지 생성 결과', res);
+         if (!response) throw new Error("디자인 생성 응답이 없습니다.");
 
-         if (!res.ok) {
-         let msg = `요청 실패 (${res.status})`;
-         try {
-            const errJson = await res.json();
-            msg = errJson?.message || msg;
-         } catch {}
-         throw new Error(msg);
+         const urls = response?.result2dImageUrls;
+         if (!Array.isArray(urls) || urls.length === 0) {
+           throw new Error("생성된 청첩장 이미지가 없습니다.");
          }
 
-         const result = await res.json().catch(() => null);
-         console.log("[submit result]", result);
+         setDesignResultImages(urls);
 
-         //await simulate(5000);
+         console.log('응답에서 URL 파싱', urls);
+
+         await simulate(5000);
 
          // ✅ 성공 시 다음 단계로 이동
          navigate(STEPS.result.path);
@@ -89,7 +97,7 @@ export function DesignDetailPage() {
       }
       catch(error) {
          console.error(error);
-         setSubmitError(error?.message || "전송 중 오류가 발생했습니다.");
+         alert(error?.message || "전송 중 오류가 발생했습니다.");
       }
 
    }

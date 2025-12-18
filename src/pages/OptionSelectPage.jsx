@@ -51,7 +51,8 @@ export function OptionSelectPage() {
       <main className={styles.main}>
         <section className={styles.card}>
           <header className={styles.header}>
-            <h1 className={`${styles.title} step-title`}>STEP 8. 특별한 기능 선택하기</h1>
+            <p className={styles.stepLabel}>STEP 8</p>
+            <h1 className={`${styles.title} step-title`}>특별한 기능 선택하기</h1>
             <p className={styles.subTitle}>
               청첩장을 더욱 특별하게 만들 기능을 선택하세요
               <br />

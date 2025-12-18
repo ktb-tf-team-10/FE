@@ -16,29 +16,51 @@ export function ResultPage() {
 
   const navigate = useNavigate();
 
-  const images = useMemo(
-    () => [
+  const images = useMemo(() => {
+    const designImages = data?.design?.result2dImageUrls;
+    console.log('제발: ', designImages);
+    if (Array.isArray(designImages) && designImages.length) {
+      return designImages.map((url, idx) => ({
+        id: `result-${idx + 1}`,
+        title: `청첩장 ${idx + 1}`,
+        desc: idx === 0
+          ? "STEP2에서 업로드한 웨딩 사진 + 배경 디자인 + 선택한 테두리"
+          : "백엔드에서 전달된 최종 이미지",
+        src: url,
+      }));
+    }
+
+    const apiImages = data?.threeD?.result?.images;
+    if (apiImages && Array.isArray(apiImages) && apiImages.length) {
+      return apiImages.map((url, idx) => ({
+        id: `result-${idx + 1}`,
+        title: `청첩장 ${idx + 1}`,
+        desc: "백엔드에서 전달된 최종 이미지",
+        src: url,
+      }));
+    }
+
+    return [
       {
         id: "result-1",
-        title: "청첩장 1",
+        title: "페이지 1",
         desc: "STEP2에서 업로드한 웨딩 사진 + 배경 디자인 + 선택한 테두리",
-        src: "/mock/result-1.png",
+        src: "/images/1.png",
       },
       {
         id: "result-2",
-        title: "청첩장 2",
+        title: "페이지 2",
         desc: "문구/정보가 포함된 청첩장",
-        src: "/mock/result-2.png",
+        src: "/images/2.png",
       },
       {
         id: "result-3",
-        title: "청첩장 3",
+        title: "페이지 3",
         desc: "추가 옵션으로 꾸며본 레이아웃 예시",
-        src: "/mock/result-1.png",
+        src: "/images/3.png",
       },
-    ],
-    []
-  );
+    ];
+  }, [data?.design?.result2dImageUrls, data?.threeD?.result?.images]);
 
   const [index, setIndex] = useState(0);
   const startXRef = useRef(0);
@@ -143,14 +165,6 @@ export function ResultPage() {
                     <div className={styles.meta}>
                       <h2 className={styles.title}>{img.title}</h2>
                       <p className={styles.desc}>{img.desc}</p>
-
-                      <div className={styles.note}>
-                        * 백엔드 연동 후 실제 청첩장 이미지가 표시됩니다
-                      </div>
-
-                      <div className={styles.swipeGuide} aria-hidden="true">
-                        ← 좌우로 스와이프 →
-                      </div>
                     </div>
                   </article>
                 ))}
@@ -182,16 +196,16 @@ export function ResultPage() {
           </div>
 
           <div className={styles.ctaRow}>
-            <button type="button" className={styles.ctaBtn} onClick={downloadAll}>
-              ⬇ 청첩장 {total}장 모두 다운로드
+            <button type="button" className={`${styles.ctaBtn} ${styles.ctaBtnPrimary}`} onClick={downloadAll}>
+              청첩장 {total}장 모두 다운로드
             </button>
-            <button type="button" className={styles.ctaBtn} onClick={redoDesign}>
-              🎨 디자인 다시하기
+            <button type="button" className={`${styles.ctaBtn} ${styles.ctaBtnOutline}`} onClick={redoDesign}>
+              디자인 다시하기
             </button>
           </div>
         </section>
         <button type="button" className={styles.tryOptionsBtn} onClick={goOptions}>
-          ✨ 특별한 기능 사용해보기
+          ✨ 3D 모바일 청첩장 기능 확인해보기
         </button>
       </main>
     </div>

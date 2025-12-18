@@ -36,11 +36,11 @@ export function SamplePage() {
   const { data } = useInvitation();
   const [copied, setCopied] = useState(false);
 
-  const groomName = data?.groom?.name || "신랑";
-  const brideName = data?.bride?.name || "신부";
+  const groomName = data?.groom?.name || "라이언";
+  const brideName = data?.bride?.name || "춘식이";
 
-  const hallName = data?.wedding?.hallName || "OO웨딩홀";
-  const address = data?.wedding?.address || "서울특별시 어딘가 123";
+  const hallName = data?.wedding?.hallName || "더 바실리움";
+  const address = data?.wedding?.address || "경기 성남시 분당구 양현로 322 1층";
   const dateTimeText = useMemo(
     () => formatDateTime(data?.wedding?.date, data?.wedding?.time) || "2026년 1월 1일 (목) 오후 1:00",
     [data?.wedding?.date, data?.wedding?.time]
@@ -49,7 +49,7 @@ export function SamplePage() {
   const dday = useMemo(() => calcDDay(data?.wedding?.date), [data?.wedding?.date]);
 
   // ✅ 실제 glb url (없으면 로컬 테스트)
-  const model3dUrl = data?.threeD?.assets?.model3dUrl || "/models/model1.glb";
+  const model3dUrl = data?.threeD?.assets?.model3dUrl || "/images/model1.glb";
 
   const inviteTitle = data?.extraMessage?.trim()
     ? "초대합니다"

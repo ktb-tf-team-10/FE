@@ -102,7 +102,7 @@ export function LandingPage() {
           <h1 className={styles.title}>
             따뜻한 감성의 <span className={styles.highlight}>AI 청첩장</span>을
             <br />
-            3분 만에 만들어보세요
+            만들어보세요
           </h1>
 
           <p className={styles.subTitle}>
@@ -174,12 +174,6 @@ export function LandingPage() {
             <div className={styles.featureDesc}>톤/프레임 조합으로 완성도 높은 결과</div>
           </article>
         </section>
-         <button onClick={handleStart}>3d 모델 테스트</button>
-        <footer className={styles.footer}>
-          <div className={styles.footerHint}>
-            * 쿠키가 저장되려면 백엔드에서 Set-Cookie + (교차 출처면) CORS/credentials 설정이 필요해요.
-          </div>
-        </footer>
       </main>
     </div>
   );

@@ -22,22 +22,22 @@ export function LandingPage() {
 
     try {
       //[API 연동] 백엔드 연동 후 수정
-      // const res = await apiFetch("/api/invitations/init", {
-      //   method: "GET",
-      //   credentials: "include", 
-      //   headers: {
-      //     Accept: "application/json",
-      //   },
-      // });
+      const res = await apiFetch("/api/invitations/init", {
+        method: "GET",
+        credentials: "include", 
+        headers: {
+          Accept: "application/json",
+        },
+      });
 
-      // if (!res.ok) {
-      //   let msg = `초기화 요청 실패 (${res.status})`;
-      //   try {
-      //     const j = await res.json();
-      //     msg = j?.message || msg;
-      //   } catch {}
-      //   throw new Error(msg);
-      // }
+      if (!res.ok) {
+        let msg = `초기화 요청 실패 (${res.status})`;
+        try {
+          const j = await res.json();
+          msg = j?.message || msg;
+        } catch {}
+        throw new Error(msg);
+      }
 
       // 서버가 쿠키를 Set-Cookie로 내려주면, 위 credentials: "include" 덕분에 브라우저에 저장됨
       // 필요하면 응답 바디를 읽어도 됨
@@ -49,6 +49,7 @@ export function LandingPage() {
       setErrMsg(e?.message || "요청 중 오류가 발생했습니다.");
     } finally {
       setLoading(false);
+      navigate(STEPS.threed.path);
     }
   };
 
@@ -139,7 +140,7 @@ export function LandingPage() {
             <div className={styles.featureDesc}>톤/프레임 조합으로 완성도 높은 결과</div>
           </article>
         </section>
-         <button onClick={routeTo3d}>3d 모델 테스트</button>
+         <button onClick={handleStart}>3d 모델 테스트</button>
         <footer className={styles.footer}>
           <div className={styles.footerHint}>
             * 쿠키가 저장되려면 백엔드에서 Set-Cookie + (교차 출처면) CORS/credentials 설정이 필요해요.

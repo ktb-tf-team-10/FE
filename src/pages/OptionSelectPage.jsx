@@ -8,6 +8,10 @@ import { STEPS } from "../router.jsx";
 export function OptionSelectPage() {
   const navigate = useNavigate();
 
+  const handleNext = () => {
+      navigate(STEPS.threed.path);
+   };
+
   const options = useMemo(
     () => [
       {
@@ -19,7 +23,7 @@ export function OptionSelectPage() {
         cta: "시작하기",
         onClick: () => {
           // TODO: 나중에 3D 기능 페이지로 라우팅
-          alert("3D 청첩장 기능은 준비 중이에요!");
+          handleNext();
         },
       },
       {

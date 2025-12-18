@@ -27,6 +27,8 @@ export function LandingPage() {
         credentials: "omit",
       });
 
+      console.log('init 요청 응답: ', res);
+
       if (!res.ok) {
         let msg = `초기화 요청 실패 (${res.status})`;
         try {

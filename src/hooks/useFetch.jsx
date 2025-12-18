@@ -74,7 +74,7 @@ export function useFetch() {
       try {
          const response = await  fetch(`${URL_BASE}${url}`, {
             method: options.method,
-            credentials: "include",
+            credentials: options.credentials,
             headers: options.header,
             body: options.body,
             signal: controllerRef.current?.signal

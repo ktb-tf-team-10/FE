@@ -61,29 +61,27 @@ export function DesignDetailPage() {
 
          console.log('요청 바디: ', formData);
 
+         const res = await apiFetch("/api/invitations/design", {
+            method: "POST",
+            body: formData,
+            withAuth: false,
+         });
 
-         //백엔드 API 개발 후 연동
-         // const res = await apiFetch("/api/invitations/design", {
-         //    method: "POST",
-         //    body: formData,
-         //    withAuth: false,
-         // });
+         console.log('이미지 생성 결과', res);
 
-         // console.log('이미지 생성 결과', res);
+         if (!res.ok) {
+         let msg = `요청 실패 (${res.status})`;
+         try {
+            const errJson = await res.json();
+            msg = errJson?.message || msg;
+         } catch {}
+         throw new Error(msg);
+         }
 
-         // if (!res.ok) {
-         // let msg = `요청 실패 (${res.status})`;
-         // try {
-         //    const errJson = await res.json();
-         //    msg = errJson?.message || msg;
-         // } catch {}
-         // throw new Error(msg);
-         // }
+         const result = await res.json().catch(() => null);
+         console.log("[submit result]", result);
 
-         // const result = await res.json().catch(() => null);
-         // console.log("[submit result]", result);
-
-         await simulate(5000);
+         //await simulate(5000);
 
          // ✅ 성공 시 다음 단계로 이동
          navigate(STEPS.result.path);

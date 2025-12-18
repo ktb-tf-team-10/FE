@@ -24,9 +24,7 @@ export function LandingPage() {
       //[API 연동] 백엔드 연동 후 수정
       const res = await apiFetch("/api/invitations/init", {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
+        credentials: "omit",
       });
 
       if (!res.ok) {

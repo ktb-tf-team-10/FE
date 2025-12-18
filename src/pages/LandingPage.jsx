@@ -29,14 +29,14 @@ export function LandingPage() {
 
       console.log('init 요청 응답: ', res);
 
-      if (!res.ok) {
-        let msg = `초기화 요청 실패 (${res.status})`;
-        try {
-          const j = await res.json();
-          msg = j?.message || msg;
-        } catch {}
-        throw new Error(msg);
-      }
+      // if (!res.ok) {
+      //   let msg = `초기화 요청 실패 (${res.status})`;
+      //   try {
+      //     const j = await res.json();
+      //     msg = j?.message || msg;
+      //   } catch {}
+      //   throw new Error(msg);
+      // }
 
       // 서버가 쿠키를 Set-Cookie로 내려주면, 위 credentials: "include" 덕분에 브라우저에 저장됨
       // 필요하면 응답 바디를 읽어도 됨

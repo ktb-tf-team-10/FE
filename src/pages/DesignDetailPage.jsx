@@ -64,7 +64,7 @@ export function DesignDetailPage() {
          const res = await apiFetch("/api/invitations/design", {
             method: "POST",
             body: formData,
-            withAuth: false,
+            credentials: "include",
          });
 
          console.log('이미지 생성 결과', res);
